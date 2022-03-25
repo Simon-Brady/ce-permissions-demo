@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { hot } from 'react-hot-loader/root';
-
+import { Navbar } from './components/Navbar';
 const App = () => {
 	return (
 		<>
-			<div>Some Nav</div>
+			<Navbar />
 			<div>Some Title</div>
 			<div>
 				<h1>Permissions</h1>
