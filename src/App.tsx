@@ -5,7 +5,6 @@ const App = () => {
 	return (
 		<>
 			<Navbar />
-			<div>Some Title</div>
 			<div>
 				<h1>Permissions</h1>
 				<div>
