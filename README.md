@@ -1,45 +1,12 @@
 # ce-permissions-demo
 
-Empty project.
-
-## Building and running on localhost
-
-First install dependencies:
-
-```sh
-npm install
-```
-
-To run in hot module reloading mode:
-
-```sh
-npm start
-```
-
-To create a production build:
-
-```sh
-npm run build-prod
-```
-
-To create a development build:
-
-```sh
-npm run build-dev
-```
-
-## Running
-
-Open the file `dist/index.html` in your browser
-
-## Testing
-
-To run unit tests:
-
-```sh
-npm test
-```
+- Demo to add an interactive frontend to demonstrate Mr. Horton's permission matrix. To inculde:
+    - permission assignment
+    - permission set creation (past mvp, but nice to have!)
+    - permissions retrieved via api (thinking strapi for setup ease!)
 
 ## Credits
+
+- createapp has been too good to me these past few demo repos, love it:
 
 Made with [createapp.dev](https://createapp.dev/)
