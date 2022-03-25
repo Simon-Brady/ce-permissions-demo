@@ -1,9 +1,9 @@
 # ce-permissions-demo
 
 - Demo to add an interactive frontend to demonstrate Mr. Horton's permission matrix. To inculde:
-    - permission assignment
-    - permission set creation (past mvp, but nice to have!)
-    - permissions retrieved via api (thinking strapi for setup ease!)
+  - permission assignment
+  - permission set creation (past mvp, but nice to have!)
+  - permissions retrieved via api (thinking strapi for setup ease!)
 
 ## Credits
 
