@@ -29,7 +29,7 @@ const config = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			templateContent: ({ htmlWebpackPlugin }) =>
-				'<!DOCTYPE html><html><head><style>body{margin: 0}</style><meta charset="utf-8"><title>' +
+				'<!DOCTYPE html><html><head><style>body{margin: 0; font-family: "Helvetica", "Arial", sans-serif;}html{font-size: 100%;}</style><meta charset="utf-8"><title>' +
 				htmlWebpackPlugin.options.title +
 				'</title></head><body><div id="app"></div></body></html>',
 			filename: 'index.html',

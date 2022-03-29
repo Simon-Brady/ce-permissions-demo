@@ -1,0 +1,9 @@
+{
+	"current_users": [
+		{ "name": "Merry B.", "role_id": 1 },
+		{ "name": "Pippin T.", "role_id": 1 },
+		{ "name": "Frodo B.", "role_id": 2 },
+		{ "name": "Sam G.", "role_id": 2 },
+		{ "name": "Gandalf G.", "role_id": 3 }
+	]
+}
