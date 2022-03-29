@@ -6,25 +6,37 @@ import { Users } from './components/users_ui';
 import { Permissions } from './components/permissions_ui';
 import { Roles } from './components/Roles';
 import { Tags } from './components/Tags';
-import { useStore } from '../src/store';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 const StyledWrapper = styled.div`
 	padding: 0 8px 12px;
 	.permissions-tags {
 		display: flex;
-		justify-content: space-between;
+	}
+	div:first-of-type:not(.tag) {
+		margin-right: 20px;
+	}
+	div.container {
+		border-radius: 10px;
+		background: #ffffff;
+		box-shadow: inset 5px -5px 10px #f7f7f7, inset -5px 5px 10px #ffffff;
 	}
 `;
 
 const App = () => {
+	const onDragEnd = () => {
+		console.log('hello');
+	};
 	return (
 		<>
 			<Navbar />
 			<StyledWrapper>
 				<h1>Permissions</h1>
 				<div className='permissions-tags'>
-					<Permissions />
-					<Tags />
+					<DragDropContext onDragEnd={onDragEnd}>
+						<Permissions />
+						<Tags />
+					</DragDropContext>
 				</div>
 				<Roles />
 				<Users />

@@ -1,13 +1,23 @@
 import React, { MouseEventHandler } from 'react';
 import tags from '../../../constants/tags.json';
 import styled from '@emotion/styled';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const StyledTagsWrapper = styled.div`
+	background: #f5f5f5;
+	text-align: center;
+	padding: 20px;
 	.tag {
-		padding: 20px;
-		background: #06ba63;
-		color: white;
+		padding: 30px 60px;
+		color: #06ba63;
 		margin: 5px;
+		text-align: center;
+		border-radius: 16px;
+		background: #ffffff;
+		box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+		span {
+			width: 50px;
+		}
 	}
 `;
 type DictionaryValue = {
@@ -34,23 +44,50 @@ const Permissions = () => {
 	};
 
 	return (
-		<StyledTagsWrapper>
-			<h3>Tags Container</h3>
-
-			{Object.entries(tags).map(([key, val], i) => {
-				return (
-					<div
-						className='tag'
-						key={i}
-						data-title={val.title}
-						data-index={key}
-						onClick={handleClick}
-					>
-						{val.title}
-					</div>
-				);
-			})}
-			<button>Create Tag Group</button>
+		<StyledTagsWrapper className='container'>
+			<Droppable droppableId='tags' key='tags'>
+				{(provided, snapshot) => {
+					return (
+						<div
+							{...provided.droppableProps}
+							ref={provided.innerRef}
+							style={{
+								// background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+								padding: 4,
+								width: 250,
+								minHeight: 500,
+							}}
+						>
+							<h3>Tags Container</h3>
+							{Object.entries(tags).map(([key, val], i) => {
+								return (
+									<Draggable draggableId={val.title} key={val.title} index={i}>
+										{(provided, snapshot) => {
+											console.log('provided', provided);
+											return (
+												<div
+													ref={provided.innerRef}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
+													className='tag'
+													key={i}
+													data-title={val.title}
+													data-index={key}
+													onClick={handleClick}
+												>
+													<span>{val.title}</span>
+												</div>
+											);
+										}}
+									</Draggable>
+								);
+							})}
+							{provided.placeholder}
+						</div>
+					);
+				}}
+			</Droppable>
+			{/* <button>Create Tag Group</button> */}
 		</StyledTagsWrapper>
 	);
 };
