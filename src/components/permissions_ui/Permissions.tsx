@@ -39,22 +39,59 @@ const Permissions = () => {
 	return (
 		<StyledTagsWrapper className='container'>
 			<b>Selected</b>
-			{Object.entries(roles).map(([key, val], i) => {
-				let tagNameNames = val.applied_tags_ids.map((id, y) => (
-					<div className='tag'>{typedTags[id].title}</div>
-				));
-				return (
-					<>
-						<p
-							key={i}
-							className={selectedRole === i + 1 ? `selected` : `hidden`}
+			<Droppable droppableId='permissions' key='permissions'>
+				{(provided, snapshot) => {
+					return (
+						<div
+							{...provided.droppableProps}
+							ref={provided.innerRef}
+							style={{
+								// background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+								padding: 4,
+								width: 250,
+								minHeight: 500,
+							}}
 						>
-							{val.name}
-							<div>{tagNameNames}</div>
-						</p>
-					</>
-				);
-			})}
+							{Object.entries(roles).map(([key, val], i) => {
+								let tagNameNames = val.applied_tags_ids.map((id, y) => (
+									<Draggable
+										draggableId={typedTags[id].title}
+										key={typedTags[id].title}
+										index={i}
+									>
+										{(provided, snapshot) => {
+											console.log('provided', provided);
+											return (
+												<div
+													className='tag'
+													ref={provided.innerRef}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
+												>
+													{typedTags[id].title}
+												</div>
+											);
+										}}
+									</Draggable>
+								));
+
+								return (
+									<>
+										<p
+											key={i}
+											className={selectedRole === i + 1 ? `selected` : `hidden`}
+										>
+											{val.name}
+											<div>{tagNameNames}</div>
+										</p>
+									</>
+								);
+							})}
+							{provided.placeholder}
+						</div>
+					);
+				}}
+			</Droppable>
 		</StyledTagsWrapper>
 	);
 };
