@@ -38,11 +38,11 @@ const useStore = create<IStore>((set, get) => ({
 		currentRoles[role].applied_tags_ids.push(Number(tag_id) + 1);
 	},
 	removeTagFromRole: (tag, tag_id, currentRoles) => {
+		console.log('props', tag, tag_id, currentRoles);
 		let role = Object.keys(tag)[0];
 		let tempRoles = currentRoles[role].applied_tags_ids.filter(
 			(tag: number) => tag !== Number(tag_id)
 		);
-		console.log('temproles', tempRoles);
 		currentRoles[role].applied_tags_ids = tempRoles;
 	},
 	setSelectedRole: (id) => {

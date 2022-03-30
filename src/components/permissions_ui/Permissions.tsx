@@ -54,16 +54,20 @@ const Permissions = () => {
 							<h3>Role Permissions</h3>
 							{Object.entries(roles).map(([key, val], i) => {
 								console.log(roles);
-								let tagNameNames = val.applied_tags_ids.map((id, y) => (
-									<Tag
-										type={'permissions'}
-										tag={{
-											tagId: key.toString(),
-											tagName: typedTags[id].title,
-										}}
-										deleteMethod={removePermission}
-									/>
-								));
+								console.log('key', key);
+								let tagNameNames = val.applied_tags_ids.map((id, y) => {
+									console.log('id', id);
+									return (
+										<Tag
+											type={'permissions'}
+											tag={{
+												tagId: id.toString(),
+												tagName: typedTags[id].title,
+											}}
+											deleteMethod={removePermission}
+										/>
+									);
+								});
 
 								return (
 									<div
