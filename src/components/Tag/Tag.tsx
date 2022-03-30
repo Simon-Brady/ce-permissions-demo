@@ -5,7 +5,8 @@ const StyledTagWrapper = styled.div`
 	display: flex;
 	height: 150px;
 	flex-direction: column;
-	box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+	box-shadow: 10px 10px 30px #d9d9d9, -20px -20px 60px #ffffff;
+	margin-bottom: 10px;
 	color: #06ba63;
 	border-radius: 16px;
 	padding: 10px;
@@ -21,6 +22,10 @@ const StyledTagWrapper = styled.div`
 		}
 	}
 	.content {
+		.title {
+			font-size: 1.2em;
+			font-weight: bold;
+		}
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -37,27 +42,35 @@ const StyledTagWrapper = styled.div`
 `;
 
 type TagProps = {
+	key?: number;
 	type: string;
 	tag: {
 		tagId: string;
 		tagName: string;
 		frequency?: { type: string; selected: boolean }[];
 	};
-	deleteMethod?: () => void;
+	deleteMethod?: (key: any, tagTitle: any) => void;
 };
 
 const Tag = (tagProps: TagProps) => {
 	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
 
-	const { type, tag, deleteMethod } = tagProps;
+	const { type, tag, deleteMethod, key } = tagProps;
+
+	const addFrequencyToRole = () => {};
 
 	return (
-		<StyledTagWrapper>
+		<StyledTagWrapper key={key}>
 			<div className='tools'>
 				{type === 'permissions' ? (
 					<>
 						<>{tag.frequency ? <span>Edit</span> : null}</>
-						<span className='delete' onClick={() => {}}>
+						<span
+							className='delete'
+							onClick={() => {
+								deleteMethod ? deleteMethod(tag.tagId, tag.tagName) : {};
+							}}
+						>
 							X
 						</span>
 					</>

@@ -17,11 +17,11 @@ const StyledWrapper = styled.div`
 	.permissions-tags {
 		display: flex;
 	}
-	div.container {
-		border-radius: 10px;
-		background: #ffffff;
-		box-shadow: inset 5px -5px 10px #f7f7f7, inset -5px 5px 10px #ffffff;
-	}
+	// div.container {
+	// 	border-radius: 10px;
+	// 	background: #ffffff;
+	// 	box-shadow: inset 5px -5px 10px #f7f7f7, inset -5px 5px 10px #ffffff;
+	// }
 `;
 
 const App = () => {

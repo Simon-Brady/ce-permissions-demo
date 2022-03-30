@@ -73,12 +73,11 @@ const Permissions = () => {
 								minHeight: 500,
 							}}
 						>
-							<h3>Tags Container</h3>
+							<h3>Available Tags</h3>
 							{Object.entries(typedTags).map(([key, val], i) => {
 								return !currentTags.includes(key) ? (
 									<Draggable draggableId={val.title} key={val.title} index={i}>
 										{(provided, snapshot) => {
-											console.log(val.frequency);
 											return (
 												<div
 													ref={provided.innerRef}
