@@ -26,14 +26,20 @@ type DictionaryValue = {
 };
 
 const Permissions = () => {
-	const { selectedRole, roles } = useStore();
+	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
 	const [currentTags, setCurrentTags] = useState(
 		roles[selectedRole.toString()].applied_tags_ids.toString()
 	);
 
 	useEffect(() => {
-		setCurrentTags(roles[selectedRole.toString()].applied_tags_ids.toString());
-	}, [selectedRole]);
+		if (refreshTags) {
+			console.log('triggered');
+			setRefreshTags(!refreshTags);
+			setCurrentTags(
+				roles[selectedRole.toString()].applied_tags_ids.toString()
+			);
+		}
+	}, [selectedRole, roles, refreshTags]);
 
 	const handleClick: MouseEventHandler = (e) => {
 		let dataObject: DictionaryValue = {},
@@ -69,7 +75,6 @@ const Permissions = () => {
 						>
 							<h3>Tags Container</h3>
 							{Object.entries(tags).map(([key, val], i) => {
-								console.log(key);
 								return !currentTags.includes(key) ? (
 									<Draggable draggableId={val.title} key={val.title} index={i}>
 										{(provided, snapshot) => {

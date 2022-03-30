@@ -51,24 +51,24 @@ const Permissions = () => {
 						>
 							{Object.entries(roles).map(([key, val], i) => {
 								let tagNameNames = val.applied_tags_ids.map((id, y) => (
-									<Draggable
-										draggableId={typedTags[id].title}
-										key={typedTags[id].title}
-										index={i}
+									// <Draggable
+									// 	draggableId={typedTags[id].title}
+									// 	key={typedTags[id].title}
+									// 	index={i}
+									// >
+									// {(provided, snapshot) => {
+									// return (
+									<div
+										className='tag'
+										// ref={provided.innerRef}
+										// {...provided.draggableProps}
+										// {...provided.dragHandleProps}
 									>
-										{(provided, snapshot) => {
-											return (
-												<div
-													className='tag'
-													ref={provided.innerRef}
-													{...provided.draggableProps}
-													{...provided.dragHandleProps}
-												>
-													{typedTags[id].title}
-												</div>
-											);
-										}}
-									</Draggable>
+										{typedTags[id].title}
+									</div>
+									// 	);
+									// }}
+									// </Draggable>
 								));
 
 								return (

@@ -11,14 +11,13 @@ interface IStore {
 	tags: { [k: string]: { title: string } };
 	roles: Roles;
 	selectedRole: number;
-	addTagToRole: (
-		tag: { [k: string]: { title: string } },
-		role_id: string
-	) => void;
+	selectedTag: string | null;
+	addTagToRole: (tag: any, role_id: string, state: any, tags: any) => void;
 	setSelectedRole: (id: number) => void;
-	// selectedRolePermissions: {
-	// 	role_id: string[];
-	// };
+	setSelectedTag: (id: string) => void;
+	refreshTags: boolean;
+	setRefreshTags: (arg: boolean) => void;
+	removeTagFromRole: (tag: any, role_id: string, state: any, tags: any) => void;
 }
 
 const typedRoles: Roles = roles;
@@ -28,13 +27,27 @@ const useStore = create<IStore>((set, get) => ({
 	tags: tags,
 	roles: roles,
 	selectedRole: 1,
-	// selectedRolePermissions: typedRoles[get().selectedRole.toString()],
-	addTagToRole: (tag, role_id) => {
-		console.log(tag, role_id);
+	selectedTag: null,
+	addTagToRole: (tag, tag_id, currentRoles) => {
+		let role = Object.keys(tag)[0];
+		currentRoles[role].applied_tags_ids.push(Number(tag_id) + 1);
+	},
+	removeTagFromRole: (tag, tag_id, currentRoles) => {
+		let role = Object.keys(tag)[0];
+		currentRoles[role].applied_tags_ids.filter(
+			(tag: number) => tag !== Number(tag_id) + 1
+		);
 	},
 	setSelectedRole: (id) => {
 		console.log('id hit!', id);
 		return set({ selectedRole: id });
+	},
+	setSelectedTag: (id) => {
+		return set({ selectedTag: id });
+	},
+	refreshTags: true,
+	setRefreshTags: (bool) => {
+		return set({ refreshTags: bool });
 	},
 }));
 

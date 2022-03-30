@@ -6,7 +6,8 @@ import { Users } from './components/users_ui';
 import { Permissions } from './components/permissions_ui';
 import { Roles } from './components/Roles';
 import { Tags } from './components/Tags';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { useStore } from './store';
 
 const StyledWrapper = styled.div`
 	padding: 0 8px 12px;
@@ -24,21 +25,50 @@ const StyledWrapper = styled.div`
 `;
 
 const App = () => {
+	const {
+		setSelectedTag,
+		selectedTag,
+		addTagToRole,
+		selectedRole,
+		roles,
+		tags,
+		setRefreshTags,
+	} = useStore();
+
 	const onDragEnd = (result: any) => {
-		console.log(result);
+		const { source, destination } = result;
+		if (!result.destination || source.droppableId === destination.droppableId)
+			return;
+		console.log(source, destination, selectedTag);
+		addTagToRole(
+			{ [selectedRole.toString()]: selectedTag },
+			source.index.toString(),
+			roles,
+			tags
+		);
+		setRefreshTags(true);
 	};
+
+	const onDragStart = (start: any) => {
+		const { draggableId } = start;
+		setSelectedTag(draggableId);
+	};
+
 	return (
 		<>
 			<Navbar />
 			<StyledWrapper>
 				<h1>Permissions</h1>
+				<Roles />
 				<div className='permissions-tags'>
-					<DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+					<DragDropContext
+						onDragEnd={(result) => onDragEnd(result)}
+						onDragStart={(start) => onDragStart(start)}
+					>
 						<Permissions />
 						<Tags />
 					</DragDropContext>
 				</div>
-				<Roles />
 				<Users />
 			</StyledWrapper>
 		</>
