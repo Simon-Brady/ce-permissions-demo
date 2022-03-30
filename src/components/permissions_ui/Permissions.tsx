@@ -32,9 +32,6 @@ type Tags = {
 const Permissions = () => {
 	const typedTags: Tags = tags;
 	const { selectedRole } = useStore();
-	useEffect(() => {
-		console.log(selectedRole, 'useEffect');
-	}, [selectedRole]);
 
 	return (
 		<StyledTagsWrapper className='container'>

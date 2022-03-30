@@ -30,7 +30,6 @@ const Permissions = () => {
 			dataValues = ['title', 'index'];
 		if (e.currentTarget) {
 			dataValues.forEach((datum) => {
-				console.log(datum);
 				return (dataObject[datum] = retrieveDataAttribute({
 					node: e.currentTarget,
 					attribute: datum,

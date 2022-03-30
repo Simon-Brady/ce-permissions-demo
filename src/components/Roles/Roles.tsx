@@ -9,7 +9,6 @@ const Roles = () => {
 		<>
 			<h3>Roles container</h3>
 			{Object.entries(roles).map(([key, val], i) => {
-				console.log(key, val, i);
 				return (
 					<p key={i} onClick={() => setSelectedRole(Number(key))}>
 						{val.name}
