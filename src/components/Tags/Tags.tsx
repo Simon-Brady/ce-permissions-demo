@@ -3,24 +3,23 @@ import tags from '../../../constants/tags.json';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useStore } from '../../../src/store';
-
+import { Tag } from '../Tag';
 const StyledTagsWrapper = styled.div`
 	background: #f5f5f5;
 	text-align: center;
+	display: flex;
 	padding: 20px;
-	.tag {
-		padding: 30px 60px;
-		color: #06ba63;
-		margin: 5px;
-		text-align: center;
-		border-radius: 16px;
-		background: #ffffff;
-		box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
-		span {
-			width: 50px;
-		}
-	}
 `;
+
+type Tags = {
+	[k: string]: {
+		title: string;
+		frequency?: {
+			type: string;
+			selected: boolean;
+		}[];
+	};
+};
 type DictionaryValue = {
 	[k: string]: string;
 };
@@ -33,7 +32,6 @@ const Permissions = () => {
 
 	useEffect(() => {
 		if (refreshTags) {
-			console.log('triggered');
 			setRefreshTags(!refreshTags);
 			setCurrentTags(
 				roles[selectedRole.toString()].applied_tags_ids.toString()
@@ -53,6 +51,8 @@ const Permissions = () => {
 			});
 		}
 	};
+
+	const typedTags: Tags = tags;
 
 	const retrieveDataAttribute = (args: { node: any; attribute: string }) => {
 		return args.node.getAttribute(`data-${args.attribute}`);
@@ -74,10 +74,11 @@ const Permissions = () => {
 							}}
 						>
 							<h3>Tags Container</h3>
-							{Object.entries(tags).map(([key, val], i) => {
+							{Object.entries(typedTags).map(([key, val], i) => {
 								return !currentTags.includes(key) ? (
 									<Draggable draggableId={val.title} key={val.title} index={i}>
 										{(provided, snapshot) => {
+											console.log(val.frequency);
 											return (
 												<div
 													ref={provided.innerRef}
@@ -89,7 +90,14 @@ const Permissions = () => {
 													data-index={key}
 													onClick={handleClick}
 												>
-													<span>{val.title}</span>
+													<Tag
+														type={'tags'}
+														tag={{
+															tagId: key.toString(),
+															tagName: val.title,
+															frequency: val.frequency,
+														}}
+													/>
 												</div>
 											);
 										}}

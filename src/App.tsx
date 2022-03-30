@@ -10,12 +10,12 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import { useStore } from './store';
 
 const StyledWrapper = styled.div`
+	h1 {
+		font-size: 3em;
+	}
 	padding: 0 8px 12px;
 	.permissions-tags {
 		display: flex;
-	}
-	div:first-of-type:not(.tag) {
-		margin-right: 20px;
 	}
 	div.container {
 		border-radius: 10px;
@@ -59,8 +59,8 @@ const App = () => {
 			<Navbar />
 			<StyledWrapper>
 				<h1>Permissions</h1>
-				<Roles />
 				<div className='permissions-tags'>
+					<Roles />
 					<DragDropContext
 						onDragEnd={(result) => onDragEnd(result)}
 						onDragStart={(start) => onDragStart(start)}

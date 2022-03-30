@@ -4,7 +4,7 @@ import tags from '../../../constants/tags.json';
 import { useStore } from '../../../src/store';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-
+import { Tag } from '../Tag';
 const StyledTagsWrapper = styled.div`
 	.hidden {
 		display: none;
@@ -20,6 +20,9 @@ const StyledTagsWrapper = styled.div`
 		border-radius: 16px;
 		background: #ffffff;
 		box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+		span {
+			color: #897c80;
+		}
 	}
 `;
 
@@ -31,11 +34,20 @@ type Tags = {
 
 const Permissions = () => {
 	const typedTags: Tags = tags;
-	const { selectedRole } = useStore();
+	const { selectedRole, removeTagFromRole, setRefreshTags, roles } = useStore();
+
+	const removePermission = (key: number, tagTitle: string) => {
+		removeTagFromRole(
+			{ [selectedRole.toString()]: tagTitle },
+			key.toString(),
+			roles,
+			tags
+		);
+		setRefreshTags(true);
+	};
 
 	return (
 		<StyledTagsWrapper className='container'>
-			<b>Selected</b>
 			<Droppable droppableId='permissions' key='permissions'>
 				{(provided, snapshot) => {
 					return (
@@ -49,8 +61,16 @@ const Permissions = () => {
 								minHeight: 500,
 							}}
 						>
+							<h3>Role Permissions</h3>
 							{Object.entries(roles).map(([key, val], i) => {
 								let tagNameNames = val.applied_tags_ids.map((id, y) => (
+									<Tag
+										type={'permissions'}
+										tag={{
+											tagId: key.toString(),
+											tagName: typedTags[id].title,
+										}}
+									/>
 									// <Draggable
 									// 	draggableId={typedTags[id].title}
 									// 	key={typedTags[id].title}
@@ -58,14 +78,21 @@ const Permissions = () => {
 									// >
 									// {(provided, snapshot) => {
 									// return (
-									<div
-										className='tag'
-										// ref={provided.innerRef}
-										// {...provided.draggableProps}
-										// {...provided.dragHandleProps}
-									>
-										{typedTags[id].title}
-									</div>
+									// <div
+									// 	className='tag'
+									// ref={provided.innerRef}
+									// {...provided.draggableProps}
+									// {...provided.dragHandleProps}
+									// >
+									// 	{typedTags[id].title}
+									// 	<span
+									// 		onClick={() =>
+									// 			removePermission(Number(key), typedTags[id].title)
+									// 		}
+									// 	>
+									// 		X
+									// 	</span>
+									// </div>
 									// 	);
 									// }}
 									// </Draggable>
@@ -77,7 +104,6 @@ const Permissions = () => {
 											key={i}
 											className={selectedRole === i + 1 ? `selected` : `hidden`}
 										>
-											{val.name}
 											<div>{tagNameNames}</div>
 										</p>
 									</>

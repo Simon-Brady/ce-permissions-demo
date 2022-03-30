@@ -1,12 +1,22 @@
 {
 	"1": {
-		"title": "US Transact"
+		"title": "US Transact",
+		"frequency": [
+			{ "type": "monthly", "selected": true },
+			{ "type": "weekly", "selected": false },
+			{ "type": "daily", "selected": false }
+		]
 	},
 	"2": {
 		"title": "CE Web"
 	},
 	"3": {
-		"title": "UK Transact"
+		"title": "UK Transact",
+		"frequency": [
+			{ "type": "monthly", "selected": false },
+			{ "type": "weekly", "selected": true },
+			{ "type": "daily", "selected": false }
+		]
 	},
 	"4": {
 		"title": "Scanner"
