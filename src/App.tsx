@@ -24,8 +24,8 @@ const StyledWrapper = styled.div`
 `;
 
 const App = () => {
-	const onDragEnd = () => {
-		console.log('hello');
+	const onDragEnd = (result: any) => {
+		console.log(result);
 	};
 	return (
 		<>
@@ -33,7 +33,7 @@ const App = () => {
 			<StyledWrapper>
 				<h1>Permissions</h1>
 				<div className='permissions-tags'>
-					<DragDropContext onDragEnd={onDragEnd}>
+					<DragDropContext onDragEnd={(result) => onDragEnd(result)}>
 						<Permissions />
 						<Tags />
 					</DragDropContext>
