@@ -1,7 +1,8 @@
-import React, { MouseEventHandler } from 'react';
+import React, { MouseEventHandler, useState, useEffect } from 'react';
 import tags from '../../../constants/tags.json';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { useStore } from '../../../src/store';
 
 const StyledTagsWrapper = styled.div`
 	background: #f5f5f5;
@@ -25,6 +26,15 @@ type DictionaryValue = {
 };
 
 const Permissions = () => {
+	const { selectedRole, roles } = useStore();
+	const [currentTags, setCurrentTags] = useState(
+		roles[selectedRole.toString()].applied_tags_ids.toString()
+	);
+
+	useEffect(() => {
+		setCurrentTags(roles[selectedRole.toString()].applied_tags_ids.toString());
+	}, [selectedRole]);
+
 	const handleClick: MouseEventHandler = (e) => {
 		let dataObject: DictionaryValue = {},
 			dataValues = ['title', 'index'];
@@ -59,10 +69,10 @@ const Permissions = () => {
 						>
 							<h3>Tags Container</h3>
 							{Object.entries(tags).map(([key, val], i) => {
-								return (
+								console.log(key);
+								return !currentTags.includes(key) ? (
 									<Draggable draggableId={val.title} key={val.title} index={i}>
 										{(provided, snapshot) => {
-											console.log('provided', provided);
 											return (
 												<div
 													ref={provided.innerRef}
@@ -79,7 +89,7 @@ const Permissions = () => {
 											);
 										}}
 									</Draggable>
-								);
+								) : null;
 							})}
 							{provided.placeholder}
 						</div>

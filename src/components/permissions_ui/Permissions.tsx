@@ -57,7 +57,6 @@ const Permissions = () => {
 										index={i}
 									>
 										{(provided, snapshot) => {
-											console.log('provided', provided);
 											return (
 												<div
 													className='tag'
