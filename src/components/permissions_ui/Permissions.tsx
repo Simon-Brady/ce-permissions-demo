@@ -54,7 +54,7 @@ const Permissions = () => {
 							<h3>Role Permissions</h3>
 							{Object.entries(roles).map(([key, val], i) => {
 								console.log(roles);
-								console.log('key', key);
+								console.log('key', key, val);
 								let tagNameNames = val.applied_tags_ids.map((id, y) => {
 									console.log('id', id);
 									return (
