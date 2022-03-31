@@ -2,9 +2,16 @@ import create from 'zustand';
 import roles from '../../constants/roles.json';
 import tags from '../../constants/tags.json';
 import users from '../../constants/users.json';
+import roles_permissions from '../../constants/roles-permissions.json';
+import tags_frequency from '../../constants/tags-frequency.json';
 
 type Roles = {
 	[k: string]: { name: string; applied_tags_ids: number[] };
+};
+
+type AppliedTag = {
+	id: string;
+	frequency?: string[];
 };
 
 type TagFnArguments = (
@@ -25,6 +32,25 @@ interface IStore {
 	refreshTags: boolean;
 	setRefreshTags: (arg: boolean) => void;
 	removeTagFromRole: TagFnArguments;
+	rolesPermissions: {
+		[k: string]: {
+			name: string;
+			applied_tags: AppliedTag[];
+		};
+	};
+	tagsFrequency: {
+		[k: string]: {
+			title: string;
+			frequency?: { id: string; type: string }[];
+		};
+	};
+	changeTagFrequency: (
+		roleId: string,
+		tagId: string,
+		frequencyId: string,
+		action: 'add' | 'remove',
+		currentPermissions: any
+	) => void;
 }
 
 const useStore = create<IStore>((set, get) => ({
@@ -33,15 +59,27 @@ const useStore = create<IStore>((set, get) => ({
 	roles: roles,
 	selectedRole: 1,
 	selectedTag: null,
-	addTagToRole: (tag, tag_id, currentRoles) => {
-		let role = Object.keys(tag)[0];
-		currentRoles[role].applied_tags_ids.push(Number(tag_id) + 1);
+	rolesPermissions: roles_permissions,
+	tagsFrequency: tags_frequency,
+	changeTagFrequency: (roleId, tagId, frequencyId, action, currentRoles) => {
+		let currentRole = currentRoles[roleId];
+		const { applied_tags } = currentRole;
+		const { id, frequency } = applied_tags;
+		const tagToChange = applied_tags.filter(
+			(appliedTag: AppliedTag) => appliedTag.id === tagId
+		);
+		if (action === 'remove') {
+		} else if (action === 'add') {
+		}
 	},
-	removeTagFromRole: (tag, tag_id, currentRoles) => {
-		console.log('props', tag, tag_id, currentRoles);
+	addTagToRole: (tag, tagId, currentRoles) => {
+		let role = Object.keys(tag)[0];
+		currentRoles[role].applied_tags_ids.push(Number(tagId) + 1);
+	},
+	removeTagFromRole: (tag, tagId, currentRoles) => {
 		let role = Object.keys(tag)[0];
 		let tempRoles = currentRoles[role].applied_tags_ids.filter(
-			(tag: number) => tag !== Number(tag_id)
+			(tag: number) => tag !== Number(tagId)
 		);
 		currentRoles[role].applied_tags_ids = tempRoles;
 	},

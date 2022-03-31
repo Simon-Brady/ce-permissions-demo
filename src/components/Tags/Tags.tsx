@@ -5,10 +5,11 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useStore } from '../../../src/store';
 import { Tag } from '../Tag';
 const StyledTagsWrapper = styled.div`
-	background: #f5f5f5;
+	background: #8bdbbc;
 	text-align: center;
 	display: flex;
 	padding: 20px;
+	border-radius: 6px;
 `;
 
 type Tags = {
@@ -58,6 +59,42 @@ const Permissions = () => {
 		return args.node.getAttribute(`data-${args.attribute}`);
 	};
 
+	const renderTags = () => {
+		let tags = Object.entries(typedTags).map(([key, val], i) => {
+			return !currentTags.includes(key) ? (
+				<Draggable draggableId={val.title} key={val.title} index={i}>
+					{(provided, snapshot) => {
+						return (
+							<div
+								ref={provided.innerRef}
+								{...provided.draggableProps}
+								{...provided.dragHandleProps}
+								className='tag'
+								key={i}
+								data-title={val.title}
+								data-index={key}
+								onClick={handleClick}
+							>
+								<Tag
+									type={'tags'}
+									tag={{
+										tagId: key.toString(),
+										tagName: val.title,
+										frequency: val.frequency,
+									}}
+								/>
+							</div>
+						);
+					}}
+				</Draggable>
+			) : null;
+		});
+		console.log(tags);
+		return !tags.every((tag) => tag === null)
+			? tags
+			: 'All available tags have been applied';
+	};
+
 	return (
 		<StyledTagsWrapper className='container'>
 			<Droppable droppableId='tags' key='tags'>
@@ -74,35 +111,7 @@ const Permissions = () => {
 							}}
 						>
 							<h3>Available Tags</h3>
-							{Object.entries(typedTags).map(([key, val], i) => {
-								return !currentTags.includes(key) ? (
-									<Draggable draggableId={val.title} key={val.title} index={i}>
-										{(provided, snapshot) => {
-											return (
-												<div
-													ref={provided.innerRef}
-													{...provided.draggableProps}
-													{...provided.dragHandleProps}
-													className='tag'
-													key={i}
-													data-title={val.title}
-													data-index={key}
-													onClick={handleClick}
-												>
-													<Tag
-														type={'tags'}
-														tag={{
-															tagId: key.toString(),
-															tagName: val.title,
-															frequency: val.frequency,
-														}}
-													/>
-												</div>
-											);
-										}}
-									</Draggable>
-								) : null;
-							})}
+							{renderTags()}
 							{provided.placeholder}
 						</div>
 					);

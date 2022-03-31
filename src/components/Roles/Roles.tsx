@@ -15,7 +15,7 @@ const StyledRolesWrapper = styled.div`
 		margin-top: 5px;
 		width: 100%;
 		height: 2px;
-		background: green;
+		background: #8bdbbc;
 		display: block;
 	}
 `;

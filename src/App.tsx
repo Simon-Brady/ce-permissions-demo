@@ -58,7 +58,7 @@ const App = () => {
 		<>
 			<Navbar />
 			<StyledWrapper>
-				<h1>Permissions</h1>
+				<h1>Permissions - Fellowship Inc.</h1>
 				<div className='permissions-tags'>
 					<Roles />
 					<DragDropContext

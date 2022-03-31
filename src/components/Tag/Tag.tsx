@@ -3,13 +3,15 @@ import styled from '@emotion/styled';
 import { useStore } from '../../store';
 import { FrequencyOptions } from '../FrequencyOptions';
 const StyledTagWrapper = styled.div`
+	&.permissions {
+		height: 100px;
+	}
+	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 	display: flex;
 	height: 150px;
 	flex-direction: column;
-	box-shadow: 10px 10px 30px #d9d9d9, -20px -20px 60px #ffffff;
 	margin-bottom: 10px;
-	color: #06ba63;
-	border-radius: 16px;
+	background-color: white;
 	padding: 10px;
 	.tools {
 		display: flex;
@@ -88,7 +90,7 @@ const Tag = (tagProps: TagProps) => {
 	};
 
 	return (
-		<StyledTagWrapper key={key}>
+		<StyledTagWrapper key={key} className={type}>
 			{type === 'tags' && <span className='grippy'></span>}
 			<div className='tools'>
 				{type === 'permissions' ? (
