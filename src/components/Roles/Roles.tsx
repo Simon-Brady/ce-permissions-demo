@@ -10,8 +10,9 @@ const StyledRolesWrapper = styled.div`
 	p {
 		cursor: pointer;
 	}
-	p.selected:after {
+	p.selected::after {
 		content: '';
+		margin-top: 5px;
 		width: 100%;
 		height: 2px;
 		background: green;

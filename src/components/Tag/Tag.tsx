@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useStore } from '../../store';
+import { FrequencyOptions } from '../FrequencyOptions';
 const StyledTagWrapper = styled.div`
 	display: flex;
 	height: 150px;
@@ -39,6 +40,27 @@ const StyledTagWrapper = styled.div`
 			}
 		}
 	}
+	span.grippy {
+		content: '....';
+		width: 10px;
+		height: 20px;
+		display: inline-block;
+		overflow: hidden;
+		line-height: 5px;
+		padding: 3px 4px;
+		cursor: move;
+		vertical-align: middle;
+		margin-top: -0.7em;
+		margin-right: 0.3em;
+		font-size: 12px;
+		font-family: sans-serif;
+		letter-spacing: 2px;
+		color: #cccccc;
+		text-shadow: 1px 0 1px black;
+	}
+	span.grippy::after {
+		content: '.. .. .. ..';
+	}
 `;
 
 type TagProps = {
@@ -53,14 +75,21 @@ type TagProps = {
 };
 
 const Tag = (tagProps: TagProps) => {
+	const [isAddFrequencyOpen, setIsAddFrequency] = useState(false);
+
 	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
 
 	const { type, tag, deleteMethod, key } = tagProps;
 
 	const addFrequencyToRole = () => {};
 
+	const toggleAddFrequencyOptionsVisibility = () => {
+		setIsAddFrequency(!isAddFrequencyOpen);
+	};
+
 	return (
 		<StyledTagWrapper key={key}>
+			{type === 'tags' && <span className='grippy'></span>}
 			<div className='tools'>
 				{type === 'permissions' ? (
 					<>
@@ -79,23 +108,27 @@ const Tag = (tagProps: TagProps) => {
 			<div className='content'>
 				<div className='title'>{tag.tagName}</div>
 				<div className='freq'>
-					{tag.frequency
-						? tag.frequency.map((el) =>
-								el.selected ? (
-									<span className='freq-value'>{el.type}</span>
-								) : null
-						  )
-						: null}
+					{tag.frequency &&
+						tag.frequency.map(
+							(el) =>
+								el.selected && <span className='freq-value'>{el.type}</span>
+						)}
 					<>
 						{tag.frequency ? (
 							<p>
-								<span className='freq-update' onClick={() => {}}>
+								<span
+									className='freq-update'
+									onClick={() => {
+										toggleAddFrequencyOptionsVisibility();
+									}}
+								>
 									Add Frequency +
 								</span>
 							</p>
 						) : (
 							''
 						)}
+						{isAddFrequencyOpen && tag.frequency ? <FrequencyOptions /> : ''}
 					</>
 				</div>
 			</div>
