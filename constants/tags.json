@@ -3,7 +3,7 @@
 		"title": "US Transact",
 		"frequency": [
 			{ "type": "monthly", "selected": true },
-			{ "type": "weekly", "selected": false },
+			{ "type": "weekly", "selected": true },
 			{ "type": "daily", "selected": false }
 		]
 	},

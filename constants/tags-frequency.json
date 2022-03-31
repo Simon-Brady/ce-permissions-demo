@@ -1,0 +1,30 @@
+{
+	"1": {
+		"title": "US Transact",
+		"frequency": [
+			{ "id": "1", "type": "monthly" },
+			{ "id": "2", "type": "weekly" },
+			{ "id": "3", "type": "daily" }
+		]
+	},
+	"2": {
+		"title": "CE Web"
+	},
+	"3": {
+		"title": "UK Transact",
+		"frequency": [
+			{ "id": "1", "type": "monthly" },
+			{ "id": "2", "type": "weekly" },
+			{ "id": "3", "type": "daily" }
+		]
+	},
+	"4": {
+		"title": "Scanner"
+	},
+	"5": {
+		"title": "Research"
+	},
+	"6": {
+		"title": "Prime"
+	}
+}
