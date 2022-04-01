@@ -33,17 +33,25 @@ const App = () => {
 		roles,
 		tags,
 		setRefreshTags,
+		rolesPermissions,
 	} = useStore();
 
 	const onDragEnd = (result: any) => {
 		const { source, destination } = result;
 		if (!result.destination || source.droppableId === destination.droppableId)
 			return;
-		console.log(source, destination, selectedTag);
-		addTagToRole(
+
+		console.log(
+			'drop',
 			{ [selectedRole.toString()]: selectedTag },
 			source.index.toString(),
 			roles,
+			tags
+		);
+		addTagToRole(
+			{ [selectedRole.toString()]: selectedTag },
+			source.index.toString(),
+			rolesPermissions,
 			tags
 		);
 		setRefreshTags(true);

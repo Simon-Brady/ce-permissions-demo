@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useState, useEffect } from 'react';
-import tags from '../../../constants/tags.json';
+import tagsFrequency from '../../../constants/tags-frequency.json';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useStore } from '../../../src/store';
@@ -17,7 +17,7 @@ type Tags = {
 		title: string;
 		frequency?: {
 			type: string;
-			selected: boolean;
+			id: string;
 		}[];
 	};
 };
@@ -26,19 +26,22 @@ type DictionaryValue = {
 };
 
 const Permissions = () => {
-	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
+	const { selectedRole, rolesPermissions, refreshTags, setRefreshTags } =
+		useStore();
 	const [currentTags, setCurrentTags] = useState(
-		roles[selectedRole.toString()].applied_tags_ids.toString()
+		rolesPermissions[selectedRole.toString()].applied_tags.map((tag) => tag.id)
 	);
 
 	useEffect(() => {
 		if (refreshTags) {
 			setRefreshTags(!refreshTags);
 			setCurrentTags(
-				roles[selectedRole.toString()].applied_tags_ids.toString()
+				rolesPermissions[selectedRole.toString()].applied_tags.map(
+					(tag) => tag.id
+				)
 			);
 		}
-	}, [selectedRole, roles, refreshTags]);
+	}, [selectedRole, rolesPermissions, refreshTags]);
 
 	const handleClick: MouseEventHandler = (e) => {
 		let dataObject: DictionaryValue = {},
@@ -53,7 +56,7 @@ const Permissions = () => {
 		}
 	};
 
-	const typedTags: Tags = tags;
+	const typedTags: Tags = tagsFrequency;
 
 	const retrieveDataAttribute = (args: { node: any; attribute: string }) => {
 		return args.node.getAttribute(`data-${args.attribute}`);
@@ -61,6 +64,7 @@ const Permissions = () => {
 
 	const renderTags = () => {
 		let tags = Object.entries(typedTags).map(([key, val], i) => {
+			console.log('key', key, 'current tags', currentTags, 'val', val);
 			return !currentTags.includes(key) ? (
 				<Draggable draggableId={val.title} key={val.title} index={i}>
 					{(provided, snapshot) => {
@@ -89,7 +93,6 @@ const Permissions = () => {
 				</Draggable>
 			) : null;
 		});
-		console.log(tags);
 		return !tags.every((tag) => tag === null)
 			? tags
 			: 'All available tags have been applied';

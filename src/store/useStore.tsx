@@ -65,16 +65,24 @@ const useStore = create<IStore>((set, get) => ({
 		let currentRole = currentRoles[roleId];
 		const { applied_tags } = currentRole;
 		const { id, frequency } = applied_tags;
+
 		const tagToChange = applied_tags.filter(
 			(appliedTag: AppliedTag) => appliedTag.id === tagId
-		);
+		)[0];
+		const tagToChangeFrequency = tagToChange.frequency;
+
 		if (action === 'remove') {
+			let tempFrequeny = tagToChangeFrequency.filter(
+				(freq: any) => freq === tagId
+			);
+			console.log(tempFrequeny);
 		} else if (action === 'add') {
+			console.log('add');
 		}
 	},
 	addTagToRole: (tag, tagId, currentRoles) => {
 		let role = Object.keys(tag)[0];
-		currentRoles[role].applied_tags_ids.push(Number(tagId) + 1);
+		currentRoles[role].applied_tags.push({ id: tagId + 1 });
 	},
 	removeTagFromRole: (tag, tagId, currentRoles) => {
 		let role = Object.keys(tag)[0];

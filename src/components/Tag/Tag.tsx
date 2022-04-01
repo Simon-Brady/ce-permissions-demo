@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useStore } from '../../store';
 import { FrequencyOptions } from '../FrequencyOptions';
+import { Roles } from '../Roles';
 const StyledTagWrapper = styled.div`
 	&.permissions {
 		height: 100px;
@@ -71,22 +72,70 @@ type TagProps = {
 	tag: {
 		tagId: string;
 		tagName: string;
-		frequency?: { type: string; selected: boolean }[];
+		frequency?: { type: string; id: string }[];
 	};
 	deleteMethod?: (key: any, tagTitle: any) => void;
+};
+
+type TypedTags = {
+	[k: string]: {
+		title: string;
+		frequency?: { id: string; type: string }[];
+	};
 };
 
 const Tag = (tagProps: TagProps) => {
 	const [isAddFrequencyOpen, setIsAddFrequency] = useState(false);
 
-	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
+	const {
+		selectedRole,
+		rolesPermissions,
+		refreshTags,
+		setRefreshTags,
+		tagsFrequency,
+	} = useStore();
 
 	const { type, tag, deleteMethod, key } = tagProps;
+	const { tagId } = tag;
+
+	type === 'tags' && console.log('tagProps', tagProps);
 
 	const addFrequencyToRole = () => {};
 
 	const toggleAddFrequencyOptionsVisibility = () => {
 		setIsAddFrequency(!isAddFrequencyOpen);
+	};
+
+	const typedTags: TypedTags = tagsFrequency;
+
+	const selectedFrequencies = () => {
+		let availableTags = typedTags[tagId].frequency;
+		let appliedPermissions = rolesPermissions[tagId]?.applied_tags.filter(
+			(appliedTag) => appliedTag.id === tagId
+		);
+		if (appliedPermissions?.length) {
+			console.log(`applied permissions for ${tag.tagName}:`);
+			console.table(appliedPermissions);
+			let arry = appliedPermissions.map((permission) => permission.id);
+			type === 'tags' && console.log('arry', arry);
+		}
+
+		// type === 'tags' &&
+		// 	console.log(
+		// 		'roles',
+		// 		'applied',
+		// 		appliedPermissions,
+		// 		'selected',
+		// 		rolesPermissions[tagId]
+		// 	);
+		// console.log(
+		// 	'avail',
+		// 	availableTags
+		// 	//  setPermissions
+		// );
+		if (tag.frequency) {
+			// tag.frequency.map((freq) => console.log('freq', freq));
+		}
 	};
 
 	return (
@@ -110,11 +159,8 @@ const Tag = (tagProps: TagProps) => {
 			<div className='content'>
 				<div className='title'>{tag.tagName}</div>
 				<div className='freq'>
-					{tag.frequency &&
-						tag.frequency.map(
-							(el) =>
-								el.selected && <span className='freq-value'>{el.type}</span>
-						)}
+					{selectedFrequencies()}
+					{tag.frequency && selectedFrequencies()}
 					<>
 						{tag.frequency ? (
 							<p>
@@ -130,7 +176,14 @@ const Tag = (tagProps: TagProps) => {
 						) : (
 							''
 						)}
-						{isAddFrequencyOpen && tag.frequency ? <FrequencyOptions /> : ''}
+						{isAddFrequencyOpen && tag.frequency ? (
+							<FrequencyOptions
+								appliedFrequencyArray={tag.frequency}
+								availableFrequencies={typedTags[tagId].frequency}
+							/>
+						) : (
+							''
+						)}
 					</>
 				</div>
 			</div>
