@@ -2,59 +2,33 @@
 	"tags": [
 		{
 			"id": 1,
-			"customName": false,
-			"tags": { "parentTagId": "1", "subTagIds": ["3", "4", "7"] }
+			"customName": "Daily US Transact",
+			"tags": { "parentTagId": "1", "subTagIds": ["1", "4", "9"] }
 		},
 		{
 			"id": 2,
-			"customName": false,
-			"tags": { "parentTagId": "1" }
+			"customName": "Delayed UK Transact",
+			"tags": { "parentTagId": "1", "subTagIds": ["10", "3", "5", "9"] }
 		},
 		{
 			"id": 3,
-			"customName": false,
-			"tags": { "parentTagId": "2" }
+			"customName": "CE Web - Custom",
+			"tags": { "parentTagId": "2", "subTagIds": ["2", "3", "4", "7"] }
 		},
 		{
 			"id": 4,
-			"customName": false,
-			"tags": { "parentTagId": "3", "subTagIds": ["7"] }
+			"customName": "US - Expanded",
+			"tags": { "parentTagId": "3", "subTagIds": ["1", "7", "8"] }
 		},
 		{
 			"id": 5,
-			"customName": false,
-			"tags": { "parentTagId": "3" }
+			"customName": "US - Top Tier",
+			"tags": { "parentTagId": "3", "subTagIds": ["1", "7", "8", "9"] }
 		},
 		{
 			"id": 6,
-			"customName": false,
-			"tags": { "parentTagId": "4" }
-		},
-		{
-			"id": 7,
-			"customName": false,
-			"tags": { "parentTagId": "5" }
-		},
-		{
-			"id": 8,
-			"customName": false,
-			"tags": { "parentTagId": "6" }
-		},
-		{
-			"id": 9,
-			"customName": false,
-			"tags": { "parentTagId": "7" }
-		},
-		{
-			"id": 10,
-			"customName": false,
-			"tags": { "parentTagId": "8" }
-		},
-
-		{
-			"id": 11,
-			"customName": false,
-			"tags": { "parentTagId": "9" }
+			"customName": "Scanner - Custom",
+			"tags": { "parentTagId": "4", "subTagIds": ["4", "8"] }
 		}
 	]
 }

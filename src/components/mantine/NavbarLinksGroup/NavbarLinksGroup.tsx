@@ -79,6 +79,7 @@ export function LinksGroup({
 	links,
 	link,
 }: LinksGroupProps) {
+	
 	const { classes, theme } = useStyles();
 	const hasLinks = Array.isArray(links);
 	const [opened, setOpened] = useState(initiallyOpened || false);
@@ -99,7 +100,6 @@ export function LinksGroup({
 
 	return (
 		<>
-			<Link to={link}>
 				<UnstyledButton
 					onClick={() => setOpened((o) => !o)}
 					className={classes.control}
@@ -124,8 +124,6 @@ export function LinksGroup({
 						)}
 					</Group>
 				</UnstyledButton>
-				{hasLinks ? <Collapse in={opened}>{items}</Collapse> : null}
-			</Link>
 		</>
 	);
 }

@@ -33,7 +33,10 @@
 	"8": {
 		"title": "Weekly"
 	},
-	"9":{
+	"9": {
 		"title": "Daily"
+	},
+	"10": {
+		"title": "Delay: 7 Day"
 	}
 }
