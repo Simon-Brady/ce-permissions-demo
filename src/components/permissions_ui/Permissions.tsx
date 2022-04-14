@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import roles from '../../../constants/roles.json';
-import tags from '../../../constants/tags.json';
+import tags from '../../../constants/tagGroups.json';
+import tagNames from '../../../constants/tags.json';
+
 import { useStore } from '../../../src/store';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
@@ -16,6 +18,17 @@ const StyledTagsWrapper = styled.div`
 `;
 
 type Tags = {
+	tags: {
+		id: number;
+		customName: boolean | string;
+		tags: {
+			parentTagId: string;
+			subTagIds?: string[];
+		};
+	}[];
+};
+
+type TagNames = {
 	[k: string]: {
 		title: string;
 	};
@@ -23,6 +36,8 @@ type Tags = {
 
 const Permissions = () => {
 	const typedTags: Tags = tags;
+	const typedTagNames: TagNames = tagNames;
+
 	const { selectedRole, removeTagFromRole, setRefreshTags, roles } = useStore();
 
 	const removePermission = (key: number, tagTitle: string) => {
@@ -37,6 +52,7 @@ const Permissions = () => {
 
 	return (
 		<StyledTagsWrapper className='container'>
+			<h3>Role Permissions</h3>
 			<Droppable droppableId='permissions' key='permissions'>
 				{(provided, snapshot) => {
 					return (
@@ -50,15 +66,19 @@ const Permissions = () => {
 								minHeight: 500,
 							}}
 						>
-							<h3>Role Permissions</h3>
 							{Object.entries(roles).map(([key, val], i) => {
 								let tagNameNames = val.applied_tags_ids.map((id, y) => {
+									let tagObject = typedTags.tags.filter(
+										(tag) => tag.id === id
+									)[0];
 									return (
 										<Tag
 											type={'permissions'}
 											tag={{
-												tagId: id.toString(),
-												tagName: typedTags[id].title,
+												tagId: tagObject.tags.parentTagId,
+												tagName:
+													typedTagNames[tagObject.tags.parentTagId].title,
+												subTagIds: tagObject.tags.subTagIds,
 											}}
 											deleteMethod={removePermission}
 										/>

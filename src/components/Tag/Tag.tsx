@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useStore } from '../../store';
+import tags from '../../../constants/tags.json';
 import { FrequencyOptions } from '../FrequencyOptions';
 import { Roles } from '../Roles';
 const StyledTagWrapper = styled.div`
-	&.permissions {
-		height: 100px;
-	}
 	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 	display: flex;
-	height: 150px;
+	min-height: 70px;
 	flex-direction: column;
 	margin-bottom: 10px;
 	background-color: white;
@@ -33,14 +31,12 @@ const StyledTagWrapper = styled.div`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin-top: 20px;
+		margin-top: 10px;
 
-		.freq {
+		.subtags:not(:empty) {
 			margin-top: 10px;
+			margin-bottom: 10px;
 			text-transform: capitalize;
-			.freq-update {
-				cursor: pointer;
-			}
 		}
 	}
 	span.grippy {
@@ -72,7 +68,7 @@ type TagProps = {
 	tag: {
 		tagId: string;
 		tagName: string;
-		frequency?: { type: string; id: string }[];
+		subTagIds?: string[];
 	};
 	deleteMethod?: (key: any, tagTitle: any) => void;
 };
@@ -80,71 +76,29 @@ type TagProps = {
 type TypedTags = {
 	[k: string]: {
 		title: string;
-		frequency?: { id: string; type: string }[];
 	};
 };
 
 const Tag = (tagProps: TagProps) => {
-	const [isAddFrequencyOpen, setIsAddFrequency] = useState(false);
-
-	const {
-		selectedRole,
-		rolesPermissions,
-		refreshTags,
-		setRefreshTags,
-		tagsFrequency,
-	} = useStore();
+	let typedJsonTags: TypedTags = tags;
 
 	const { type, tag, deleteMethod, key } = tagProps;
-	const { tagId } = tag;
 
-	type === 'tags' && console.log('tagProps', tagProps);
+	const { subTagIds } = tag;
 
-	const addFrequencyToRole = () => {};
-
-	const toggleAddFrequencyOptionsVisibility = () => {
-		setIsAddFrequency(!isAddFrequencyOpen);
-	};
-
-	const typedTags: TypedTags = tagsFrequency;
-
-	const selectedFrequencies = () => {
-		let availableTags = typedTags[tagId].frequency;
-		let appliedPermissions = rolesPermissions[tagId]?.applied_tags.filter(
-			(appliedTag) => appliedTag.id === tagId
-		);
-		if (appliedPermissions?.length) {
-			console.log(`applied permissions for ${tag.tagName}:`);
-			console.table(appliedPermissions);
-			let arry = appliedPermissions.map((permission) => permission.id);
-			type === 'tags' && console.log('arry', arry);
-		}
-
-		// type === 'tags' &&
-		// 	console.log(
-		// 		'roles',
-		// 		'applied',
-		// 		appliedPermissions,
-		// 		'selected',
-		// 		rolesPermissions[tagId]
-		// 	);
-		// console.log(
-		// 	'avail',
-		// 	availableTags
-		// 	//  setPermissions
-		// );
-		if (tag.frequency) {
-			// tag.frequency.map((freq) => console.log('freq', freq));
+	const renderSubTags = () => {
+		if (subTagIds) {
+			return subTagIds.map((tag) => <p>{typedJsonTags[tag].title}</p>);
+		} else {
+			return null;
 		}
 	};
-
 	return (
 		<StyledTagWrapper key={key} className={type}>
 			{type === 'tags' && <span className='grippy'></span>}
 			<div className='tools'>
 				{type === 'permissions' ? (
 					<>
-						<>{tag.frequency ? <span>Edit</span> : null}</>
 						<span
 							className='delete'
 							onClick={() => {
@@ -158,34 +112,7 @@ const Tag = (tagProps: TagProps) => {
 			</div>
 			<div className='content'>
 				<div className='title'>{tag.tagName}</div>
-				<div className='freq'>
-					{selectedFrequencies()}
-					{tag.frequency && selectedFrequencies()}
-					<>
-						{tag.frequency ? (
-							<p>
-								<span
-									className='freq-update'
-									onClick={() => {
-										toggleAddFrequencyOptionsVisibility();
-									}}
-								>
-									Add Frequency +
-								</span>
-							</p>
-						) : (
-							''
-						)}
-						{isAddFrequencyOpen && tag.frequency ? (
-							<FrequencyOptions
-								appliedFrequencyArray={tag.frequency}
-								availableFrequencies={typedTags[tagId].frequency}
-							/>
-						) : (
-							''
-						)}
-					</>
-				</div>
+				<div className='subtags'>{renderSubTags()}</div>{' '}
 			</div>
 		</StyledTagWrapper>
 	);

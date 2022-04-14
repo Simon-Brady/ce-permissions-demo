@@ -26,5 +26,14 @@
 	},
 	"6": {
 		"title": "Prime"
+	},
+	"7": {
+		"title": "Monthly"
+	},
+	"8": {
+		"title": "Weekly"
+	},
+	"9":{
+		"title": "Daily"
 	}
 }

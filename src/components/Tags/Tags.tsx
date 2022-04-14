@@ -1,9 +1,11 @@
 import React, { MouseEventHandler, useState, useEffect } from 'react';
-import tagsFrequency from '../../../constants/tags-frequency.json';
+import tagGroups from '../../../constants/tagGroups.json';
 import styled from '@emotion/styled';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { useStore } from '../../../src/store';
 import { Tag } from '../Tag';
+import tagsJson from '../../../constants/tags.json';
+
 const StyledTagsWrapper = styled.div`
 	background: #8bdbbc;
 	text-align: center;
@@ -12,13 +14,9 @@ const StyledTagsWrapper = styled.div`
 	border-radius: 6px;
 `;
 
-type Tags = {
+type TypedTagsJson = {
 	[k: string]: {
 		title: string;
-		frequency?: {
-			type: string;
-			id: string;
-		}[];
 	};
 };
 type DictionaryValue = {
@@ -26,6 +24,7 @@ type DictionaryValue = {
 };
 
 const Permissions = () => {
+	let typedTagsJson: TypedTagsJson = tagsJson;
 	const { selectedRole, rolesPermissions, refreshTags, setRefreshTags } =
 		useStore();
 	const [currentTags, setCurrentTags] = useState(
@@ -56,17 +55,20 @@ const Permissions = () => {
 		}
 	};
 
-	const typedTags: Tags = tagsFrequency;
-
 	const retrieveDataAttribute = (args: { node: any; attribute: string }) => {
 		return args.node.getAttribute(`data-${args.attribute}`);
 	};
 
 	const renderTags = () => {
-		let tags = Object.entries(typedTags).map(([key, val], i) => {
-			console.log('key', key, 'current tags', currentTags, 'val', val);
-			return !currentTags.includes(key) ? (
-				<Draggable draggableId={val.title} key={val.title} index={i}>
+		let tags = tagGroups.tags.map((tag) => {
+			let id = tag.id.toString();
+			let tagName =
+				tag.customName && typeof tag.customName === 'string'
+					? tag.customName
+					: typedTagsJson[tag.tags.parentTagId].title;
+
+			return !currentTags.includes(id) ? (
+				<Draggable draggableId={id} key={id} index={Number(id)}>
 					{(provided, snapshot) => {
 						return (
 							<div
@@ -74,17 +76,17 @@ const Permissions = () => {
 								{...provided.draggableProps}
 								{...provided.dragHandleProps}
 								className='tag'
-								key={i}
-								data-title={val.title}
-								data-index={key}
+								key={Number(id)}
+								data-title={tag.id}
+								data-index={Number(id)}
 								onClick={handleClick}
 							>
 								<Tag
 									type={'tags'}
 									tag={{
-										tagId: key.toString(),
-										tagName: val.title,
-										frequency: val.frequency,
+										tagId: id,
+										tagName: tagName,
+										subTagIds: tag.tags.subTagIds,
 									}}
 								/>
 							</div>
