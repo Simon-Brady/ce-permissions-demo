@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { useStore } from '../../store';
+import tags from '../../../constants/tags.json';
 import { FrequencyOptions } from '../FrequencyOptions';
+import { Roles } from '../Roles';
 const StyledTagWrapper = styled.div`
-	&.permissions {
-		height: 100px;
-	}
 	box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
 	display: flex;
-	height: 150px;
+	min-height: 70px;
 	flex-direction: column;
 	margin-bottom: 10px;
 	background-color: white;
@@ -32,14 +31,12 @@ const StyledTagWrapper = styled.div`
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin-top: 20px;
+		margin-top: 10px;
 
-		.freq {
+		.subtags:not(:empty) {
 			margin-top: 10px;
+			margin-bottom: 10px;
 			text-transform: capitalize;
-			.freq-update {
-				cursor: pointer;
-			}
 		}
 	}
 	span.grippy {
@@ -71,31 +68,37 @@ type TagProps = {
 	tag: {
 		tagId: string;
 		tagName: string;
-		frequency?: { type: string; selected: boolean }[];
+		subTagIds?: string[];
 	};
 	deleteMethod?: (key: any, tagTitle: any) => void;
 };
 
-const Tag = (tagProps: TagProps) => {
-	const [isAddFrequencyOpen, setIsAddFrequency] = useState(false);
+type TypedTags = {
+	[k: string]: {
+		title: string;
+	};
+};
 
-	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
+const Tag = (tagProps: TagProps) => {
+	let typedJsonTags: TypedTags = tags;
 
 	const { type, tag, deleteMethod, key } = tagProps;
 
-	const addFrequencyToRole = () => {};
+	const { subTagIds } = tag;
 
-	const toggleAddFrequencyOptionsVisibility = () => {
-		setIsAddFrequency(!isAddFrequencyOpen);
+	const renderSubTags = () => {
+		if (subTagIds) {
+			return subTagIds.map((tag) => <p>{typedJsonTags[tag].title}</p>);
+		} else {
+			return null;
+		}
 	};
-
 	return (
 		<StyledTagWrapper key={key} className={type}>
 			{type === 'tags' && <span className='grippy'></span>}
 			<div className='tools'>
 				{type === 'permissions' ? (
 					<>
-						<>{tag.frequency ? <span>Edit</span> : null}</>
 						<span
 							className='delete'
 							onClick={() => {
@@ -109,30 +112,7 @@ const Tag = (tagProps: TagProps) => {
 			</div>
 			<div className='content'>
 				<div className='title'>{tag.tagName}</div>
-				<div className='freq'>
-					{tag.frequency &&
-						tag.frequency.map(
-							(el) =>
-								el.selected && <span className='freq-value'>{el.type}</span>
-						)}
-					<>
-						{tag.frequency ? (
-							<p>
-								<span
-									className='freq-update'
-									onClick={() => {
-										toggleAddFrequencyOptionsVisibility();
-									}}
-								>
-									Add Frequency +
-								</span>
-							</p>
-						) : (
-							''
-						)}
-						{isAddFrequencyOpen && tag.frequency ? <FrequencyOptions /> : ''}
-					</>
-				</div>
+				<div className='subtags'>{renderSubTags()}</div>{' '}
 			</div>
 		</StyledTagWrapper>
 	);

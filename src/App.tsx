@@ -8,6 +8,8 @@ import { Roles } from './components/Roles';
 import { Tags } from './components/Tags';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useStore } from './store';
+import { AppShell } from '@mantine/core';
+import { MantineHeader, MantineSidebar } from './components/mantine';
 
 const StyledWrapper = styled.div`
 	h1 {
@@ -39,7 +41,14 @@ const App = () => {
 		const { source, destination } = result;
 		if (!result.destination || source.droppableId === destination.droppableId)
 			return;
-		console.log(source, destination, selectedTag);
+
+		console.log(
+			'drop',
+			{ [selectedRole.toString()]: selectedTag },
+			source.index.toString(),
+			roles,
+			tags
+		);
 		addTagToRole(
 			{ [selectedRole.toString()]: selectedTag },
 			source.index.toString(),
@@ -51,26 +60,39 @@ const App = () => {
 
 	const onDragStart = (start: any) => {
 		const { draggableId } = start;
+		console.log('draggable ID', draggableId);
 		setSelectedTag(draggableId);
 	};
 
 	return (
 		<>
-			<Navbar />
-			<StyledWrapper>
-				<h1>Permissions - Fellowship Inc.</h1>
-				<div className='permissions-tags'>
-					<Roles />
-					<DragDropContext
-						onDragEnd={(result) => onDragEnd(result)}
-						onDragStart={(start) => onDragStart(start)}
-					>
-						<Permissions />
-						<Tags />
-					</DragDropContext>
-				</div>
-				<Users />
-			</StyledWrapper>
+			<AppShell
+				padding='md'
+				navbar={<MantineSidebar />}
+				header={<MantineHeader />}
+				styles={(theme) => ({
+					main: {
+						backgroundColor:
+							theme.colorScheme === 'dark'
+								? theme.colors.dark[8]
+								: theme.colors.gray[0],
+					},
+				})}
+			>
+				<StyledWrapper>
+					<h1>Permissions - Fellowship Inc.</h1>
+					<div className='permissions-tags'>
+						<DragDropContext
+							onDragEnd={(result) => onDragEnd(result)}
+							onDragStart={(start) => onDragStart(start)}
+						>
+							<Permissions />
+							<Tags />
+						</DragDropContext>
+					</div>
+					<Users />
+				</StyledWrapper>
+			</AppShell>
 		</>
 	);
 };
