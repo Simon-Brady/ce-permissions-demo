@@ -27,19 +27,36 @@ const StyledTagWrapper = styled.div`
 		.title {
 			font-size: 1.2em;
 			font-weight: bold;
+			text-align: left;
+			width: 100%;
+			border-bottom: 1px solid grey;
 		}
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		align-items: flex-start;
 		margin-top: 10px;
 
 		.subtags:not(:empty) {
 			margin-top: 10px;
 			margin-bottom: 10px;
 			text-transform: capitalize;
+			.subtags-group {
+				display: flex;
+				flex-wrap: wrap;
+				.subtag {
+					background: lightgrey;
+					border-radius: 6px;
+					padding: 5px;
+					margin: 5px 5px 0 0;
+					&.delay {
+						background: orange;
+					}
+				}
+			}
 		}
 	}
 	span.grippy {
+		align-self: flex-end;
 		content: '....';
 		width: 10px;
 		height: 20px;
@@ -88,7 +105,19 @@ const Tag = (tagProps: TagProps) => {
 
 	const renderSubTags = () => {
 		if (subTagIds) {
-			return subTagIds.map((tag) => <p>{typedJsonTags[tag].title}</p>);
+			return (
+				<div className='subtags-group'>
+					{subTagIds.map((tag) => (
+						<span
+							className={`subtag ${
+								typedJsonTags[tag].title.includes('Delay') ? 'delay' : 'tag'
+							}`}
+						>
+							{typedJsonTags[tag].title}
+						</span>
+					))}
+				</div>
+			);
 		} else {
 			return null;
 		}

@@ -1,30 +1,7 @@
 import React from 'react';
-import { Navbar, Group, Code, ScrollArea, createStyles } from '@mantine/core';
-import {
-	Notes,
-	CalendarStats,
-	Home,
-	Focus,
-	Gauge,
-	ScubaMask,
-	Message,
-	PresentationAnalytics,
-	FileAnalytics,
-	Database,
-	Adjustments,
-	Lock,
-} from 'tabler-icons-react';
+import { Navbar, ScrollArea, createStyles } from '@mantine/core';
 import UserButton from './UserButton/UserButton';
-import { LinksGroup } from './NavbarLinksGroup/NavbarLinksGroup';
 import { Roles } from '../../components/Roles';
-
-const mockdata = [
-	{ label: 'Overview', icon: Home, link: '/' },
-	{ label: 'Saved Dashboards', icon: Focus, link: '/dashboards' },
-	{ label: 'Company Deep Dive', icon: ScubaMask, link: '/deep-dive' },
-	{ label: 'Idea Generation', icon: Message, link: '/idea-generation' },
-	{ label: 'Daily Scanner', icon: Database, link: '/scanner' },
-];
 
 const useStyles = createStyles((theme) => ({
 	navbar: {
@@ -65,10 +42,6 @@ const useStyles = createStyles((theme) => ({
 
 const MantineSidebar = () => {
 	const { classes } = useStyles();
-	const links = mockdata.map((item) => {
-		return <LinksGroup {...item} key={item.label} />;
-	});
-
 	return (
 		<Navbar height={800} width={{ sm: 300 }} p='md' className={classes.navbar}>
 			<Navbar.Section grow className={classes.links} component={ScrollArea}>

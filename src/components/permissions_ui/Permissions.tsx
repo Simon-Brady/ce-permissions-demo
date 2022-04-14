@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import roles from '../../../constants/roles.json';
 import tags from '../../../constants/tagGroups.json';
 import tagNames from '../../../constants/tags.json';
 
@@ -52,7 +51,7 @@ const Permissions = () => {
 
 	return (
 		<StyledTagsWrapper className='container'>
-			<h3>Role Permissions</h3>
+			<h3>Granted Permissions</h3>
 			<Droppable droppableId='permissions' key='permissions'>
 				{(provided, snapshot) => {
 					return (
@@ -71,13 +70,17 @@ const Permissions = () => {
 									let tagObject = typedTags.tags.filter(
 										(tag) => tag.id === id
 									)[0];
+									console.log(tagObject);
 									return (
 										<Tag
 											type={'permissions'}
 											tag={{
 												tagId: tagObject.tags.parentTagId,
 												tagName:
-													typedTagNames[tagObject.tags.parentTagId].title,
+													tagObject.customName &&
+													typeof tagObject.customName === 'string'
+														? tagObject.customName
+														: typedTagNames[tagObject.tags.parentTagId].title,
 												subTagIds: tagObject.tags.subTagIds,
 											}}
 											deleteMethod={removePermission}

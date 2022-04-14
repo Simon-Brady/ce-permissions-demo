@@ -65,7 +65,7 @@ const Permissions = () => {
 				tag.customName && typeof tag.customName === 'string'
 					? tag.customName
 					: typedTagsJson[tag.tags.parentTagId].title;
-			console.log('current Tags', currentTags);
+
 			return !currentTags.includes(id) ? (
 				<Draggable draggableId={id} key={id} index={Number(id)}>
 					{(provided, snapshot) => {
@@ -114,7 +114,7 @@ const Permissions = () => {
 								minHeight: 500,
 							}}
 						>
-							<h3>Available Tags</h3>
+							<h3>Available Permissions</h3>
 							{renderTags()}
 							{provided.placeholder}
 						</div>
