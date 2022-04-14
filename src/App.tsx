@@ -33,7 +33,6 @@ const App = () => {
 		roles,
 		tags,
 		setRefreshTags,
-		rolesPermissions,
 	} = useStore();
 
 	const onDragEnd = (result: any) => {
@@ -51,7 +50,7 @@ const App = () => {
 		addTagToRole(
 			{ [selectedRole.toString()]: selectedTag },
 			source.index.toString(),
-			rolesPermissions,
+			roles,
 			tags
 		);
 		setRefreshTags(true);
@@ -59,6 +58,7 @@ const App = () => {
 
 	const onDragStart = (start: any) => {
 		const { draggableId } = start;
+		console.log('draggable ID', draggableId);
 		setSelectedTag(draggableId);
 	};
 

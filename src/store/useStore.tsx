@@ -38,19 +38,19 @@ interface IStore {
 			applied_tags: AppliedTag[];
 		};
 	};
-	tagsFrequency: {
-		[k: string]: {
-			title: string;
-			frequency?: { id: string; type: string }[];
-		};
-	};
-	changeTagFrequency: (
-		roleId: string,
-		tagId: string,
-		frequencyId: string,
-		action: 'add' | 'remove',
-		currentPermissions: any
-	) => void;
+	// tagsFrequency: {
+	// 	[k: string]: {
+	// 		title: string;
+	// 		frequency?: { id: string; type: string }[];
+	// 	};
+	// };
+	// changeTagFrequency: (
+	// 	roleId: string,
+	// 	tagId: string,
+	// 	frequencyId: string,
+	// 	action: 'add' | 'remove',
+	// 	currentPermissions: any
+	// ) => void;
 }
 
 const useStore = create<IStore>((set, get) => ({
@@ -60,29 +60,30 @@ const useStore = create<IStore>((set, get) => ({
 	selectedRole: 1,
 	selectedTag: null,
 	rolesPermissions: roles_permissions,
-	tagsFrequency: tags_frequency,
-	changeTagFrequency: (roleId, tagId, frequencyId, action, currentRoles) => {
-		let currentRole = currentRoles[roleId];
-		const { applied_tags } = currentRole;
-		const { id, frequency } = applied_tags;
+	// tagsFrequency: tags_frequency,
+	// changeTagFrequency: (roleId, tagId, frequencyId, action, currentRoles) => {
+	// 	let currentRole = currentRoles[roleId];
+	// 	const { applied_tags } = currentRole;
+	// 	const { id, frequency } = applied_tags;
 
-		const tagToChange = applied_tags.filter(
-			(appliedTag: AppliedTag) => appliedTag.id === tagId
-		)[0];
-		const tagToChangeFrequency = tagToChange.frequency;
+	// 	const tagToChange = applied_tags.filter(
+	// 		(appliedTag: AppliedTag) => appliedTag.id === tagId
+	// 	)[0];
+	// 	const tagToChangeFrequency = tagToChange.frequency;
 
-		if (action === 'remove') {
-			let tempFrequeny = tagToChangeFrequency.filter(
-				(freq: any) => freq === tagId
-			);
-			console.log(tempFrequeny);
-		} else if (action === 'add') {
-			console.log('add');
-		}
-	},
+	// 	if (action === 'remove') {
+	// 		let tempFrequeny = tagToChangeFrequency.filter(
+	// 			(freq: any) => freq === tagId
+	// 		);
+	// 		console.log(tempFrequeny);
+	// 	} else if (action === 'add') {
+	// 		console.log('add');
+	// 	}
+	// },
 	addTagToRole: (tag, tagId, currentRoles) => {
+		console.log('method', currentRoles);
 		let role = Object.keys(tag)[0];
-		currentRoles[role].applied_tags.push({ id: tagId + 1 });
+		currentRoles[role].applied_tags_ids.push(Number(tagId));
 	},
 	removeTagFromRole: (tag, tagId, currentRoles) => {
 		let role = Object.keys(tag)[0];

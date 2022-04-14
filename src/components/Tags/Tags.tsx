@@ -25,22 +25,21 @@ type DictionaryValue = {
 
 const Permissions = () => {
 	let typedTagsJson: TypedTagsJson = tagsJson;
-	const { selectedRole, rolesPermissions, refreshTags, setRefreshTags } =
-		useStore();
+	const { selectedRole, roles, refreshTags, setRefreshTags } = useStore();
 	const [currentTags, setCurrentTags] = useState(
-		rolesPermissions[selectedRole.toString()].applied_tags.map((tag) => tag.id)
+		roles[selectedRole.toString()].applied_tags_ids.map((tag) => tag.toString())
 	);
 
 	useEffect(() => {
 		if (refreshTags) {
 			setRefreshTags(!refreshTags);
 			setCurrentTags(
-				rolesPermissions[selectedRole.toString()].applied_tags.map(
-					(tag) => tag.id
+				roles[selectedRole.toString()].applied_tags_ids.map((tag) =>
+					tag.toString()
 				)
 			);
 		}
-	}, [selectedRole, rolesPermissions, refreshTags]);
+	}, [selectedRole, roles, refreshTags]);
 
 	const handleClick: MouseEventHandler = (e) => {
 		let dataObject: DictionaryValue = {},
@@ -66,7 +65,7 @@ const Permissions = () => {
 				tag.customName && typeof tag.customName === 'string'
 					? tag.customName
 					: typedTagsJson[tag.tags.parentTagId].title;
-
+			console.log('current Tags', currentTags);
 			return !currentTags.includes(id) ? (
 				<Draggable draggableId={id} key={id} index={Number(id)}>
 					{(provided, snapshot) => {
